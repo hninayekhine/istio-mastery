@@ -1,10 +1,13 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sa-web-app
+  name: sa-webapp
   labels:
-    app: sa-frontend
+    app: sa-webapp
 spec:
+  selector:
+    matchLabels:
+      app: sa-webapp
   replicas: 1
   minReadySeconds: 15
   strategy:
@@ -15,13 +18,13 @@ spec:
   template:
     metadata:
       labels:
-        app: sa-web-app
+        app: sa-webapp
         version: v1
     spec:
       containers:
-      - image: rinormaloku/sentiment-analysis-web-app:istio-tracing
+      - image: hninayekhine/sentiment-analysis-webapp:istio-tracing
         imagePullPolicy: Always
-        name: sa-web-app
+        name: sa-webapp
         env:
         - name: SA_LOGIC_API_URL
           value: http://sa-logic
@@ -43,13 +46,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: sa-web-app
+  name: sa-webapp
   labels:
-    app: sa-frontend
+    app: sa-webapp
 spec:
   ports:
   - name: http
     port: 80
     targetPort: 8080
   selector:
-    app: sa-web-app
+    app: sa-webapp

@@ -1,10 +1,13 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sa-feedback
   labels:
     app: sa-feedback
 spec:
+  selector:
+    matchLabels:
+      app: sa-feedback
   strategy:
     type: Recreate
   template:
@@ -14,7 +17,7 @@ spec:
         version: v1
     spec:
       containers:
-      - image: rinormaloku/sentiment-analysis-feedback:istio-tracing
+      - image: hninayekhine/sentiment-analysis-feedback:istio-tracing
         imagePullPolicy: Always
         name: sa-feedback
         env:
